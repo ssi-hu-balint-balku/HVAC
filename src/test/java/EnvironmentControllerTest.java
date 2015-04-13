@@ -50,6 +50,32 @@ public class EnvironmentControllerTest {
         assertTrue(fanIsTurnedOn);
     }
 
+    @Test
+    public void should_not_turn_on_fan_for_5_mins_after_heater_is_turned_off() {
+        EnvironmentController controller = new EnvironmentController(new FakeHVAC());
+
+        // turning heater on
+        testTemp = 64;
+        controller.tick();
+
+        // turning heater off
+        testTemp = 66;
+        controller.tick();
+
+        // trying to turn heater back on
+        testTemp = 64;
+        controller.tick();
+        assertFalse(heatIsTurnedOn);
+        controller.tick();
+        assertFalse(heatIsTurnedOn);
+        controller.tick();
+        assertFalse(heatIsTurnedOn);
+        controller.tick();
+        assertFalse(heatIsTurnedOn);
+        controller.tick();
+        assertTrue(heatIsTurnedOn);
+    }
+
     private class FakeHVAC implements HVAC {
         public void heat(boolean on) {
             heatIsTurnedOn = on;

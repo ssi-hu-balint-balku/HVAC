@@ -9,7 +9,10 @@
  */
 public class EnvironmentController {
 
-    HVAC hvac;
+    private final HVAC hvac;
+
+    private int fanTimeout = 0;
+
 
     public EnvironmentController(HVAC hvac) {
         this.hvac = hvac;
@@ -22,18 +25,21 @@ public class EnvironmentController {
      *   should call it, of course].
      */
     void tick() {
-        int temp = hvac.temp();
-        if (temp < 65) {
-            hvac.heat(true);
-            hvac.fan(true);
-        } else if (temp > 75) {
-            hvac.cool(true);
-            hvac.fan(true);
+        int temp = this.hvac.temp();
+        if ((temp < 65) && (this.fanTimeout == 0)) {
+            this.hvac.heat(true);
+            this.hvac.fan(true);
+            this.fanTimeout = 5;
+        } else if ((temp > 75) && (this.fanTimeout == 0)) {
+            this.hvac.cool(true);
+            this.hvac.fan(true);
+            this.fanTimeout = 3;
         } else {
-            hvac.heat(false);
-            hvac.cool(false);
-            hvac.fan(false);
+            this.hvac.heat(false);
+            this.hvac.cool(false);
+            this.hvac.fan(false);
+            this.fanTimeout = Math.max(0, --this.fanTimeout);
         }
-
     }
+
 }
