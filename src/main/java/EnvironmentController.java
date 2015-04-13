@@ -11,6 +11,12 @@
  */
 public class EnvironmentController {
 
+    HVAC hvac;
+
+    public EnvironmentController(HVAC hvac) {
+        this.hvac = hvac;
+    }
+
     /**
      * called 1x per minute by the *rest* of the
      *   application. Your production code doesn’t call tick() - it
@@ -18,6 +24,7 @@ public class EnvironmentController {
      *   should call it, of course].
      */
     void tick() {
-        // TODO
+        hvac.heat(true);
+        hvac.fan(true);
     }
 }
