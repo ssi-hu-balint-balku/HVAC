@@ -18,7 +18,7 @@ repositories {
 }
 
 task run(type:JavaExec) {
-    main = "HvacApp"
+    main = "com.training.HvacApp"
     classpath = sourceSets.main.runtimeClasspath
     systemProperty 'server', System.props.get('server') ?: 'false'
     systemProperty 'high', System.props.get('high') ?: '75'

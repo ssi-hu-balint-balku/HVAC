@@ -30,7 +30,8 @@ public class EnvironmentRunner {
   }
 
   public void start() {
-    this.executorService.scheduleAtFixedRate(() -> EnvironmentRunner.this.environmentController.tick(), 0, 1, TimeUnit.MINUTES);
+    this.executorService.scheduleAtFixedRate(
+            EnvironmentRunner.this.environmentController::tick, 0, 1, TimeUnit.MINUTES);
   }
 
   public void stop() {

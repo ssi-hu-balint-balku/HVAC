@@ -40,6 +40,7 @@ public class EnvironmentController implements IEnvironmentController {
      */
     @Override
     public void tick() {
+        System.out.println("tick");
         int temp = this.hvac.temp();
         if ((temp < this.tempLow) && (this.fanTimeout == 0)) {
             heatRoom();
