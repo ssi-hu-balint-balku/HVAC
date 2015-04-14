@@ -3,6 +3,7 @@ package com.training;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
@@ -15,48 +16,53 @@ public class SocketWrapperTest {
 
     @Test
     public void ItCanStartASocketAtAPort() throws Exception {
-        try (SocketWrapper socket = new SocketWrapper(5000)) {
-            StartSocket(socket);
-
-            // Try to connect
-            boolean connected = false;
-            int retries = 0;
-            while (!connected && retries < 5) {
-                InetAddress host = InetAddress.getLocalHost();
-                try (Socket client = new Socket(host.getHostName(), 5000)) {
-                    connected = true;
-
-                    String dataWritten = WriteToSocket(client, "Test\n");
-
-                    assertEquals("Test", dataWritten);
-                } catch (ConnectException e) {
-                    Thread.sleep(100);
-                    retries++;
-                }
-            }
-
-            // Throw exception if we couldn't retry
-            if (retries >= 5) {
-                throw new Exception();
-            }
+        try (SocketWrapper socketWrapper = new SocketWrapper(5000)) {
+            startSocket(socketWrapper);
+            withValidConnection((client) -> {
+                String dataWritten = writeToSocket((Socket) client, "Test\n");
+                assertEquals("Test", dataWritten);
+            });
         }
     }
 
-    private void StartSocket(SocketWrapper socket) {
-        new Thread() {
-            public void run() {
-                socket.start();
-            }
-        }.start();
+    private interface SocketExecutor {
+        void execute(Object client);
     }
 
-    private String WriteToSocket(Socket client, String data) throws Exception {
-        PrintWriter out = new PrintWriter(client.getOutputStream());
-        BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+    private void withValidConnection(SocketExecutor executor) throws InterruptedException, IOException {
+        boolean connected = false;
+        int retries = 0;
+        while (!connected && retries < 5) {
+            InetAddress host = InetAddress.getLocalHost();
+            try (Socket client = new Socket(host.getHostName(), 5000)) {
+                connected = true;
+                executor.execute(client);
+            } catch (ConnectException e) {
+                Thread.sleep(100);
+                retries++;
+            }
+        }
+        if (retries >= 5) {
+            throw new RuntimeException();
+        }
+    }
 
-        out.println(data);
-        out.flush();
+    private void startSocket(SocketWrapper socket) {
+        new Thread(socket::start).start();
+    }
 
-        return in.readLine();
+    private String writeToSocket(Socket client, String data) {
+        try {
+            PrintWriter out = new PrintWriter(client.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            out.println(data);
+            out.flush();
+
+            return in.readLine();
+        }
+        catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }
