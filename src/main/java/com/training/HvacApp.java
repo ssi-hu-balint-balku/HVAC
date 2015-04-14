@@ -16,11 +16,11 @@ public class HvacApp {
         System.out.println("high: " + high);
         System.out.println("low: " + low);
 
-        EnvironmentController environmentController = getEnvironmentController();
+        IEnvironmentController environmentController = getEnvironmentController();
         environmentController.setTemperatureBoundaryHigh(high);
         environmentController.setTemperatureBoundaryLow(low);
         EnvironmentRunner environmentRunner = new EnvironmentRunner(environmentController);
-        
+
         try {
             environmentRunner.start();
 
@@ -37,7 +37,7 @@ public class HvacApp {
         }
     }
 
-    private static EnvironmentController getEnvironmentController() {
+    private static IEnvironmentController getEnvironmentController() {
         return new EnvironmentController(new HVAC() {
             @Override
             public void heat(boolean on) {
