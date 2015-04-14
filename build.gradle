@@ -17,6 +17,14 @@ repositories {
     mavenCentral()
 }
 
+task run(type:JavaExec) {
+    main = "HvacApp"
+    classpath = sourceSets.main.runtimeClasspath
+    systemProperty 'server', System.props.get('server') ?: 'false'
+    systemProperty 'high', System.props.get('high') ?: '75'
+    systemProperty 'low', System.props.get('low') ?: '65'
+}
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
