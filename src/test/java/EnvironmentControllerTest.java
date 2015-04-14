@@ -29,7 +29,6 @@ public class EnvironmentControllerTest {
         assertFalse(fanIsTurnedOn);
     }
 
-
     @Test
     public void cool_and_fan_should_turn_off_if_its_a_good_temp() {
         coolIsTurnedOn = true;

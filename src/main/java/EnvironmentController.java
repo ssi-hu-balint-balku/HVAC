@@ -13,7 +13,6 @@ public class EnvironmentController {
 
     private int fanTimeout = 0;
 
-
     public EnvironmentController(HVAC hvac) {
         this.hvac = hvac;
     }
@@ -27,19 +26,35 @@ public class EnvironmentController {
     void tick() {
         int temp = this.hvac.temp();
         if ((temp < 65) && (this.fanTimeout == 0)) {
-            this.hvac.heat(true);
-            this.hvac.fan(true);
-            this.fanTimeout = 5;
+            heatRoom();
         } else if ((temp > 75) && (this.fanTimeout == 0)) {
-            this.hvac.cool(true);
-            this.hvac.fan(true);
-            this.fanTimeout = 3;
+            coolRoom();
         } else {
-            this.hvac.heat(false);
-            this.hvac.cool(false);
-            this.hvac.fan(false);
-            this.fanTimeout = Math.max(0, --this.fanTimeout);
+            turnEverythingOff();
+            decrementFanTimeout();
         }
+    }
+
+    private void heatRoom() {
+        this.hvac.heat(true);
+        this.hvac.fan(true);
+        this.fanTimeout = 5;
+    }
+
+    private void coolRoom() {
+        this.hvac.cool(true);
+        this.hvac.fan(true);
+        this.fanTimeout = 3;
+    }
+
+    private void turnEverythingOff() {
+        this.hvac.heat(false);
+        this.hvac.cool(false);
+        this.hvac.fan(false);
+    }
+
+    private void decrementFanTimeout() {
+        this.fanTimeout = Math.max(0, --this.fanTimeout);
     }
 
 }
