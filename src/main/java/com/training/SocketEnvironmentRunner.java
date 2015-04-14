@@ -4,11 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class SocketEnvironmentRunner implements IEnvironmentRunner {
-
-    private final IEnvironmentController environmentController;
-
-    private final ScheduledExecutorService executorService;
+public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner {
 
     private final SocketWrapper socket;
 
@@ -22,21 +18,20 @@ public class SocketEnvironmentRunner implements IEnvironmentRunner {
             IEnvironmentController environmentController,
             SocketWrapper socket,
             ScheduledExecutorService executorService) {
-        this.environmentController = environmentController;
+        super(environmentController, executorService);
         this.socket = socket;
-        this.executorService = executorService;
     }
 
     @Override
     public void start() {
         this.executorService.submit(socket::start);
-        this.executorService.scheduleAtFixedRate(environmentController::tick, 0, 1, TimeUnit.MINUTES);
+        super.start();
     }
 
     @Override
     public void stop() {
         this.executorService.submit(socket::close);
-        this.executorService.shutdownNow();
+        super.stop();
     }
 
 }

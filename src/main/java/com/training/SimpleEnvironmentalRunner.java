@@ -8,7 +8,7 @@ public class SimpleEnvironmentalRunner implements IEnvironmentRunner {
 
     private final IEnvironmentController environmentController;
 
-    private final ScheduledExecutorService executorService;
+    protected final ScheduledExecutorService executorService;
 
     public SimpleEnvironmentalRunner(IEnvironmentController environmentController) {
         this(environmentController, Executors.newSingleThreadScheduledExecutor());
