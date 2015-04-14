@@ -4,15 +4,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * Created with IntelliJ IDEA.
- * <p>
- * User: Balint_Balku
- * Date: 2015-04-14
- * <p>
- * (c) Survey Sampling International
- */
 public class SocketEnvironmentRunner implements IEnvironmentRunner {
 
     private final IEnvironmentController environmentController;
