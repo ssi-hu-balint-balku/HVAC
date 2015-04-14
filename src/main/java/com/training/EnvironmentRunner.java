@@ -19,18 +19,25 @@ public class EnvironmentRunner {
 
     private final ScheduledExecutorService executorService;
 
+    private final SocketWrapper socket;
 
-    public EnvironmentRunner(IEnvironmentController environmentController) {
-        this(environmentController, Executors.newSingleThreadScheduledExecutor());
+    public EnvironmentRunner(
+            IEnvironmentController environmentController,
+            SocketWrapper socket) {
+        this(environmentController, socket, Executors.newSingleThreadScheduledExecutor());
     }
 
-    public EnvironmentRunner(IEnvironmentController environmentController, ScheduledExecutorService executorService) {
+    public EnvironmentRunner(
+            IEnvironmentController environmentController,
+            SocketWrapper socket,
+            ScheduledExecutorService executorService) {
         this.environmentController = environmentController;
+        this.socket = socket;
         this.executorService = executorService;
     }
 
     public void start() {
-
+        this.executorService.submit(socket::start);
         this.executorService.scheduleAtFixedRate(
                 EnvironmentRunner.this.environmentController::tick, 0, 1, TimeUnit.MINUTES);
     }

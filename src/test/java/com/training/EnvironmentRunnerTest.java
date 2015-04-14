@@ -19,62 +19,68 @@ import java.util.concurrent.TimeUnit;
  */
 public class EnvironmentRunnerTest {
 
-  private class ExecutorSpy extends ScheduledThreadPoolExecutor {
+    private class ExecutorSpy extends ScheduledThreadPoolExecutor {
 
-    private boolean scheduleAtFixRateCalled = false;
-    private boolean shutdownCalled = false;
+        private boolean scheduleAtFixRateCalled = false;
+        private boolean shutdownCalled = false;
 
 
-    private ExecutorSpy() {
-      super(1);
+        private ExecutorSpy() {
+            super(1);
+        }
+
+        @Override
+        public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
+            this.scheduleAtFixRateCalled = true;
+            return null;
+        }
+
+        @Override
+        public List<Runnable> shutdownNow() {
+            this.shutdownCalled = true;
+            return null;
+        }
     }
 
-    @Override
-    public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
-      this.scheduleAtFixRateCalled = true;
-      return null;
+    private class DummyEnvironmentController implements IEnvironmentController {
+        @Override
+        public void setTemperatureBoundaryHigh(int highTemp) {
+            throw new UnsupportedOperationException("Not implemented yet.");
+        }
+
+        @Override
+        public void setTemperatureBoundaryLow(int lowTemp) {
+            throw new UnsupportedOperationException("Not implemented yet.");
+        }
+
+        @Override
+        public void tick() {
+            throw new UnsupportedOperationException("Not implemented yet.");
+        }
     }
 
-    @Override
-    public List<Runnable> shutdownNow() {
-      this.shutdownCalled = true;
-      return null;
+    @Test
+    public void should_schedule_at_fix_rate_on_start() {
+        ExecutorSpy executorSpy = new ExecutorSpy();
+        SocketWrapper socket = new SocketWrapper(8080);
+        EnvironmentRunner environmentRunner =
+                new EnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
+
+        environmentRunner.start();
+
+        Assert.assertTrue(executorSpy.scheduleAtFixRateCalled);
     }
-  }
 
-  private class DummyEnvironmentController implements IEnvironmentController {
-    @Override
-    public void setTemperatureBoundaryHigh(int highTemp) {
-      throw new UnsupportedOperationException("Not implemented yet.");
+    @Test
+    public void should_shutdown_executor_on_stop() {
+        ExecutorSpy executorSpy = new ExecutorSpy();
+        SocketWrapper socket = new SocketWrapper(8080);
+        EnvironmentRunner environmentRunner =
+                new EnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
+
+        environmentRunner.stop();
+
+        Assert.assertTrue(executorSpy.shutdownCalled);
     }
-    @Override
-    public void setTemperatureBoundaryLow(int lowTemp) {
-      throw new UnsupportedOperationException("Not implemented yet.");
-    }
-    @Override
-    public void tick() {
-      throw new UnsupportedOperationException("Not implemented yet.");
-    }
-  }
-
-  @Test
-  public void should_schedule_at_fix_rate_on_start() {
-    ExecutorSpy executorSpy = new ExecutorSpy();
-    EnvironmentRunner environmentRunner = new EnvironmentRunner(new DummyEnvironmentController(), executorSpy);
-
-    environmentRunner.start();
-
-    Assert.assertTrue(executorSpy.scheduleAtFixRateCalled);
-  }
-
-  @Test
-  public void should_shutdown_executor_on_stop() {
-    ExecutorSpy executorSpy = new ExecutorSpy();
-    EnvironmentRunner environmentRunner = new EnvironmentRunner(new DummyEnvironmentController(), executorSpy);
-
-    environmentRunner.stop();
-
-    Assert.assertTrue(executorSpy.shutdownCalled);
-  }
 
 }

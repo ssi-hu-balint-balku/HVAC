@@ -15,7 +15,7 @@ public class HvacApp {
         IEnvironmentController environmentController = getEnvironmentController();
         environmentController.setTemperatureBoundaryHigh(high);
         environmentController.setTemperatureBoundaryLow(low);
-        EnvironmentRunner environmentRunner = new EnvironmentRunner(environmentController);
+        EnvironmentRunner environmentRunner = new EnvironmentRunner(environmentController, new SocketWrapper(8080));
 
         try {
             environmentRunner.start();
