@@ -64,14 +64,12 @@ public class EnvironmentControllerTest {
 
         // trying to turn heater back on
         testTemp = 64;
-        controller.tick();
-        assertFalse(heatIsTurnedOn);
-        controller.tick();
-        assertFalse(heatIsTurnedOn);
-        controller.tick();
-        assertFalse(heatIsTurnedOn);
-        controller.tick();
-        assertFalse(heatIsTurnedOn);
+
+        for(int i = 0; i < 4; i++) {
+            controller.tick();
+            assertFalse(heatIsTurnedOn);
+        }
+
         controller.tick();
         assertTrue(heatIsTurnedOn);
     }
