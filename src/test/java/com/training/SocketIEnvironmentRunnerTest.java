@@ -13,15 +13,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * Created with IntelliJ IDEA.
- * <p>
- * User: Balint_Balku
- * Date: 2015-04-14
- * <p>
- * (c) Survey Sampling International
- */
 public class SocketIEnvironmentRunnerTest {
     private ExecutorSpy executorSpy;
     private SocketSpy socket;
