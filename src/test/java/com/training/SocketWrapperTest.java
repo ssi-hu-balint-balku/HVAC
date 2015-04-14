@@ -1,3 +1,6 @@
+package com.training;
+
+import com.training.SocketWrapper;
 import org.junit.Test;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
