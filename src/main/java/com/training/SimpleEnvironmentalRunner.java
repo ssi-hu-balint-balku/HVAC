@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SimpleEnvironmentalRunner implements IEnvironmentRunner {
 
-    private final IEnvironmentController environmentController;
+    protected final IEnvironmentController environmentController;
 
     protected final ScheduledExecutorService executorService;
 
