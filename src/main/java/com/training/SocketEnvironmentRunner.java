@@ -11,7 +11,7 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner {
     public SocketEnvironmentRunner(
             IEnvironmentController environmentController,
             SocketWrapper socket) {
-        this(environmentController, socket, Executors.newSingleThreadScheduledExecutor());
+        this(environmentController, socket, Executors.newScheduledThreadPool(2));
     }
 
     public SocketEnvironmentRunner(
@@ -24,12 +24,15 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner {
 
     @Override
     public void start() {
+        System.out.println("starting " + this.getClass().getSimpleName());
         this.executorService.submit(socket::start);
+        System.out.println("starting...");
         super.start();
     }
 
     @Override
     public void stop() {
+        System.out.println("stopping " + this.getClass().getSimpleName());
         this.executorService.submit(socket::close);
         super.stop();
     }
