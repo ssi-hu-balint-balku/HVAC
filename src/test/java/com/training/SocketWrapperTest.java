@@ -1,21 +1,21 @@
 package com.training;
 
-import com.training.SocketWrapper;
 import org.junit.Test;
-import java.io.PrintWriter;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.net.Socket;
-import java.net.InetAddress;
-import java.net.ConnectException;
 
-import static org.junit.Assert.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.Socket;
+
+import static org.junit.Assert.assertEquals;
 
 public class SocketWrapperTest {
 
     @Test
     public void ItCanStartASocketAtAPort() throws Exception {
-        try(SocketWrapper socket = new SocketWrapper(5000)) {
+        try (SocketWrapper socket = new SocketWrapper(5000)) {
             StartSocket(socket);
 
             // Try to connect
@@ -23,13 +23,13 @@ public class SocketWrapperTest {
             int retries = 0;
             while (!connected && retries < 5) {
                 InetAddress host = InetAddress.getLocalHost();
-                try(Socket client = new Socket(host.getHostName(), 5000)) {
+                try (Socket client = new Socket(host.getHostName(), 5000)) {
                     connected = true;
 
                     String dataWritten = WriteToSocket(client, "Test\n");
 
                     assertEquals("Test", dataWritten);
-                } catch(ConnectException e) {
+                } catch (ConnectException e) {
                     Thread.sleep(100);
                     retries++;
                 }
