@@ -1,3 +1,5 @@
+package com.training;
+
 /**
  * heating & cooling elements are across the room from the thermostat, so
  * increasing the temperature requires heat + fan,
@@ -7,14 +9,27 @@
  *   • hard rule: the fan can't run for 5 minutes after the heater is turned off
  *   • hard rule: the fan can't run for 3 minutes after the cooler is turned off
  */
-public class EnvironmentController {
+public class EnvironmentController implements IEnvironmentController {
 
     private final HVAC hvac;
 
     private int fanTimeout = 0;
+    private int tempHigh = 75;
+    private int tempLow = 65;
+
 
     public EnvironmentController(HVAC hvac) {
         this.hvac = hvac;
+    }
+
+    @Override
+    public void setTemperatureBoundaryHigh(int highTemp) {
+        this.tempHigh = highTemp;
+    }
+
+    @Override
+    public void setTemperatureBoundaryLow(int lowTemp) {
+        this.tempLow = lowTemp;
     }
 
     /**
@@ -23,11 +38,12 @@ public class EnvironmentController {
      *   gets called by another part of the system [though the tests
      *   should call it, of course].
      */
-    void tick() {
+    @Override
+    public void tick() {
         int temp = this.hvac.temp();
-        if ((temp < 65) && (this.fanTimeout == 0)) {
+        if ((temp < this.tempLow) && (this.fanTimeout == 0)) {
             heatRoom();
-        } else if ((temp > 75) && (this.fanTimeout == 0)) {
+        } else if ((temp > this.tempHigh) && (this.fanTimeout == 0)) {
             coolRoom();
         } else {
             turnEverythingOff();

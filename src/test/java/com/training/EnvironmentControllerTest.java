@@ -1,6 +1,9 @@
+package com.training;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class EnvironmentControllerTest {
 
@@ -34,6 +37,8 @@ public class EnvironmentControllerTest {
         coolIsTurnedOn = true;
         fanIsTurnedOn = true;
         EnvironmentController controller = new EnvironmentController(new FakeHVAC());
+        controller.setTemperatureBoundaryHigh(71);
+        controller.setTemperatureBoundaryLow(69);
         testTemp = 70;
         controller.tick();
         assertFalse(coolIsTurnedOn);
@@ -114,4 +119,5 @@ public class EnvironmentControllerTest {
             return testTemp;
         }
     }
+
 }

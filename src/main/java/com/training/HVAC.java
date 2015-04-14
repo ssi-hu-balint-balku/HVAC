@@ -1,3 +1,5 @@
+package com.training;
+
 public interface HVAC {
     void heat(boolean on);
     void cool(boolean on);
