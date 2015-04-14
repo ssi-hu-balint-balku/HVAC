@@ -4,10 +4,6 @@ public class HvacApp {
 
     public static void main(String[] args) {
 
-        for (String arg : args) {
-            System.out.println("arg: " + arg);
-        }
-
         boolean isServer = System.getProperties().getProperty("server").equals("true");
         int high = Integer.valueOf(System.getProperties().getProperty("high"));
         int low = Integer.valueOf(System.getProperties().getProperty("low"));
