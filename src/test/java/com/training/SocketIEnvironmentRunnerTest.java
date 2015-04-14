@@ -1,5 +1,7 @@
 package com.training;
 
+import com.training.fakes.ExecutorSpy;
+import com.training.fakes.SocketSpy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,35 +26,6 @@ public class SocketIEnvironmentRunnerTest {
     private SocketSpy socket;
     private SocketEnvironmentRunner socketEnvironmentRunner;
 
-    private class ExecutorSpy extends ScheduledThreadPoolExecutor {
-
-        private boolean scheduleAtFixRateCalled = false;
-        private boolean shutdownCalled = false;
-
-
-        private ExecutorSpy() {
-            super(1);
-        }
-
-        @Override
-        public Future<?> submit(Runnable task) {
-            task.run();
-            return null;
-        }
-
-        @Override
-        public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
-            this.scheduleAtFixRateCalled = true;
-            return null;
-        }
-
-        @Override
-        public List<Runnable> shutdownNow() {
-            this.shutdownCalled = true;
-            return null;
-        }
-    }
-
     private class DummyEnvironmentController implements IEnvironmentController {
         @Override
         public void setTemperatureBoundaryHigh(int highTemp) {
@@ -67,25 +40,6 @@ public class SocketIEnvironmentRunnerTest {
         @Override
         public void tick() {
             throw new UnsupportedOperationException("Not implemented yet.");
-        }
-    }
-
-    private class SocketSpy extends SocketWrapper {
-        private boolean startCalled;
-        private boolean closeCalled;
-
-        public SocketSpy() {
-            super(8080);
-        }
-
-        @Override
-        public void start() {
-            this.startCalled = true;
-        }
-
-        @Override
-        public void close() {
-            this.closeCalled = true;
         }
     }
 
