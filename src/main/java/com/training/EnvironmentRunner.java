@@ -15,27 +15,28 @@ import java.util.concurrent.TimeUnit;
  */
 public class EnvironmentRunner {
 
-  private final IEnvironmentController environmentController;
+    private final IEnvironmentController environmentController;
 
-  private final ScheduledExecutorService executorService;
+    private final ScheduledExecutorService executorService;
 
 
-  public EnvironmentRunner(IEnvironmentController environmentController) {
-    this(environmentController, Executors.newSingleThreadScheduledExecutor());
-  }
+    public EnvironmentRunner(IEnvironmentController environmentController) {
+        this(environmentController, Executors.newSingleThreadScheduledExecutor());
+    }
 
-  public EnvironmentRunner(IEnvironmentController environmentController, ScheduledExecutorService executorService) {
-    this.environmentController = environmentController;
-    this.executorService = executorService;
-  }
+    public EnvironmentRunner(IEnvironmentController environmentController, ScheduledExecutorService executorService) {
+        this.environmentController = environmentController;
+        this.executorService = executorService;
+    }
 
-  public void start() {
-    this.executorService.scheduleAtFixedRate(
-            EnvironmentRunner.this.environmentController::tick, 0, 1, TimeUnit.MINUTES);
-  }
+    public void start() {
 
-  public void stop() {
-    this.executorService.shutdownNow();
-  }
+        this.executorService.scheduleAtFixedRate(
+                EnvironmentRunner.this.environmentController::tick, 0, 1, TimeUnit.MINUTES);
+    }
+
+    public void stop() {
+        this.executorService.shutdownNow();
+    }
 
 }
