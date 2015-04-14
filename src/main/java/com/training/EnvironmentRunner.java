@@ -43,6 +43,7 @@ public class EnvironmentRunner {
     }
 
     public void stop() {
+        this.executorService.submit(socket::close);
         this.executorService.shutdownNow();
     }
 

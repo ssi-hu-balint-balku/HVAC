@@ -1,9 +1,11 @@
 package com.training;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +21,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class EnvironmentRunnerTest {
 
+    private ExecutorSpy executorSpy;
+    private SocketSpy socket;
+
     private class ExecutorSpy extends ScheduledThreadPoolExecutor {
 
         private boolean scheduleAtFixRateCalled = false;
@@ -27,6 +32,12 @@ public class EnvironmentRunnerTest {
 
         private ExecutorSpy() {
             super(1);
+        }
+
+        @Override
+        public Future<?> submit(Runnable task) {
+            task.run();
+            return null;
         }
 
         @Override
@@ -59,28 +70,51 @@ public class EnvironmentRunnerTest {
         }
     }
 
+    private class SocketSpy extends SocketWrapper {
+        private boolean startCalled;
+        private boolean closeCalled;
+
+        public SocketSpy() {
+            super(8080);
+        }
+
+        @Override
+        public void start() {
+            this.startCalled = true;
+        }
+
+        @Override
+        public void close() {
+            this.closeCalled = true;
+        }
+    }
+
+    @Before
+    public void setup() {
+        this.executorSpy = new ExecutorSpy();
+        this.socket = new SocketSpy();
+    }
+
     @Test
     public void should_schedule_at_fix_rate_on_start() {
-        ExecutorSpy executorSpy = new ExecutorSpy();
-        SocketWrapper socket = new SocketWrapper(8080);
         EnvironmentRunner environmentRunner =
                 new EnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
 
         environmentRunner.start();
 
         Assert.assertTrue(executorSpy.scheduleAtFixRateCalled);
+        Assert.assertTrue(socket.startCalled);
     }
 
     @Test
     public void should_shutdown_executor_on_stop() {
-        ExecutorSpy executorSpy = new ExecutorSpy();
-        SocketWrapper socket = new SocketWrapper(8080);
         EnvironmentRunner environmentRunner =
                 new EnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
 
         environmentRunner.stop();
 
         Assert.assertTrue(executorSpy.shutdownCalled);
+        Assert.assertTrue(socket.closeCalled);
     }
 
 }
