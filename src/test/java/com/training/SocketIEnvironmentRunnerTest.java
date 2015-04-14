@@ -1,5 +1,6 @@
 package com.training;
 
+import com.training.fakes.DummyEnvironmentController;
 import com.training.fakes.ExecutorSpy;
 import com.training.fakes.SocketSpy;
 import org.junit.Assert;
@@ -25,23 +26,6 @@ public class SocketIEnvironmentRunnerTest {
     private ExecutorSpy executorSpy;
     private SocketSpy socket;
     private SocketEnvironmentRunner socketEnvironmentRunner;
-
-    private class DummyEnvironmentController implements IEnvironmentController {
-        @Override
-        public void setTemperatureBoundaryHigh(int highTemp) {
-            throw new UnsupportedOperationException("Not implemented yet.");
-        }
-
-        @Override
-        public void setTemperatureBoundaryLow(int lowTemp) {
-            throw new UnsupportedOperationException("Not implemented yet.");
-        }
-
-        @Override
-        public void tick() {
-            throw new UnsupportedOperationException("Not implemented yet.");
-        }
-    }
 
     @Before
     public void setup() {
