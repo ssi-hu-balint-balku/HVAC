@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * (c) Survey Sampling International
  */
-public class EnvironmentRunnerTest {
+public class SocketIEnvironmentRunnerTest {
     private ExecutorSpy executorSpy;
     private SocketSpy socket;
-    private EnvironmentRunner environmentRunner;
+    private SocketEnvironmentRunner socketEnvironmentRunner;
 
     private class ExecutorSpy extends ScheduledThreadPoolExecutor {
 
@@ -93,19 +93,19 @@ public class EnvironmentRunnerTest {
     public void setup() {
         this.executorSpy = new ExecutorSpy();
         this.socket = new SocketSpy();
-        environmentRunner = new EnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
+        socketEnvironmentRunner = new SocketEnvironmentRunner(new DummyEnvironmentController(), socket, executorSpy);
     }
 
     @Test
     public void should_schedule_at_fix_rate_on_start() {
-        environmentRunner.start();
+        socketEnvironmentRunner.start();
         Assert.assertTrue(executorSpy.scheduleAtFixRateCalled);
         Assert.assertTrue(socket.startCalled);
     }
 
     @Test
     public void should_shutdown_executor_on_stop() {
-        environmentRunner.stop();
+        socketEnvironmentRunner.stop();
         Assert.assertTrue(executorSpy.shutdownCalled);
         Assert.assertTrue(socket.closeCalled);
     }

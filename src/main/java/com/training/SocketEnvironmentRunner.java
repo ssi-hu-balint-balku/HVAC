@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * (c) Survey Sampling International
  */
-public class EnvironmentRunner {
+public class SocketEnvironmentRunner implements IEnvironmentRunner {
 
     private final IEnvironmentController environmentController;
 
@@ -21,13 +21,13 @@ public class EnvironmentRunner {
 
     private final SocketWrapper socket;
 
-    public EnvironmentRunner(
+    public SocketEnvironmentRunner(
             IEnvironmentController environmentController,
             SocketWrapper socket) {
         this(environmentController, socket, Executors.newSingleThreadScheduledExecutor());
     }
 
-    public EnvironmentRunner(
+    public SocketEnvironmentRunner(
             IEnvironmentController environmentController,
             SocketWrapper socket,
             ScheduledExecutorService executorService) {
@@ -36,12 +36,13 @@ public class EnvironmentRunner {
         this.executorService = executorService;
     }
 
+    @Override
     public void start() {
         this.executorService.submit(socket::start);
-        this.executorService.scheduleAtFixedRate(
-                EnvironmentRunner.this.environmentController::tick, 0, 1, TimeUnit.MINUTES);
+        this.executorService.scheduleAtFixedRate(environmentController::tick, 0, 1, TimeUnit.MINUTES);
     }
 
+    @Override
     public void stop() {
         this.executorService.submit(socket::close);
         this.executorService.shutdownNow();
