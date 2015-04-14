@@ -67,11 +67,11 @@ public class EnvironmentControllerTest {
 
         for(int i = 0; i < 4; i++) {
             controller.tick();
-            assertFalse(heatIsTurnedOn);
+            assertFalse(fanIsTurnedOn);
         }
 
         controller.tick();
-        assertTrue(heatIsTurnedOn);
+        assertTrue(fanIsTurnedOn);
     }
 
     @Test
@@ -91,11 +91,11 @@ public class EnvironmentControllerTest {
 
         for(int i = 0; i < 2; i++) {
             controller.tick();
-            assertFalse(coolIsTurnedOn);
+            assertFalse(fanIsTurnedOn);
         }
 
         controller.tick();
-        assertTrue(coolIsTurnedOn);
+        assertTrue(fanIsTurnedOn);
     }
 
     private class FakeHVAC implements HVAC {
