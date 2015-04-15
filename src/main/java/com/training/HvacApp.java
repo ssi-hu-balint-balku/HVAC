@@ -4,23 +4,8 @@ public class HvacApp {
 
     public static void main(String[] args) {
 
-        SocketWrapper socket;
-
-        IEnvironmentRunner socketEnvironmentRunner;
-
-        int high = Integer.valueOf(System.getProperties().getProperty("high"));
-        int low = Integer.valueOf(System.getProperties().getProperty("low"));
-        IEnvironmentController environmentController = getEnvironmentController();
-        environmentController.setTemperatureBoundaryHigh(high);
-        environmentController.setTemperatureBoundaryLow(low);
-
-        try {
-            int port = Integer.valueOf(System.getProperties().getProperty("server"));
-            socket = new SocketWrapper(port);
-            socketEnvironmentRunner = new SocketEnvironmentRunner(environmentController, socket);
-        } catch (Exception e) {
-            socketEnvironmentRunner = new SimpleEnvironmentalRunner(environmentController);
-        }
+        IEnvironmentController environmentController = EnvironmentControllerFactory.getController(new NonWorkingHVAC());
+        IEnvironmentRunner socketEnvironmentRunner = EnvironmentRunnerFactory.getRunner(environmentController);
 
         try {
             socketEnvironmentRunner.start();
@@ -34,10 +19,6 @@ public class HvacApp {
         } finally {
             socketEnvironmentRunner.stop();
         }
-    }
-
-    private static IEnvironmentController getEnvironmentController() {
-        return new EnvironmentController(new RealHVAC());
     }
 
 }
