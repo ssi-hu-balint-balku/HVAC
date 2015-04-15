@@ -42,6 +42,9 @@ public class EnvironmentController implements IEnvironmentController {
     public void tick() {
         int temp = this.hvac.temp();
         System.out.println("current temperature: " + temp);
+        System.out.println("current min/max: " + tempLow + "/"+tempHigh);
+        System.out.println("fan timeout: " + fanTimeout);
+
         if ((temp < this.tempLow) && (this.fanTimeout <= 0)) {
             heatRoom();
         } else if ((temp > this.tempHigh) && (this.fanTimeout <= 0)) {
