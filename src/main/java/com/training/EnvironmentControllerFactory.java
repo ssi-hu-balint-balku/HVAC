@@ -2,6 +2,8 @@ package com.training;
 
 public class EnvironmentControllerFactory {
 
+    private EnvironmentControllerFactory() {}
+
     public static IEnvironmentController getController(HVAC hvac) {
         int high = Integer.valueOf(System.getProperties().getProperty("high"));
         int low = Integer.valueOf(System.getProperties().getProperty("low"));

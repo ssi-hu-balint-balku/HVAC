@@ -2,6 +2,8 @@ package com.training;
 
 public class EnvironmentRunnerFactory {
 
+    private EnvironmentRunnerFactory() {}
+
     public static IEnvironmentRunner getRunner(IEnvironmentController environmentController) {
         try {
             int port = Integer.valueOf(System.getProperties().getProperty("server"));
