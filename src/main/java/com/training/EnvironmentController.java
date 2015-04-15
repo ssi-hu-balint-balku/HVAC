@@ -42,11 +42,14 @@ public class EnvironmentController implements IEnvironmentController {
     public void tick() {
         int temp = this.hvac.temp();
         System.out.println("current temperature: " + temp);
-        if ((temp < this.tempLow) && (this.fanTimeout == 0)) {
+        if ((temp < this.tempLow) && (this.fanTimeout <= 0)) {
             heatRoom();
-        } else if ((temp > this.tempHigh) && (this.fanTimeout == 0)) {
+        } else if ((temp > this.tempHigh) && (this.fanTimeout <= 0)) {
             coolRoom();
         } else {
+            if (this.fanTimeout < 0) {
+                this.fanTimeout = -this.fanTimeout;
+            }
             turnEverythingOff();
             decrementFanTimeout();
         }
@@ -55,13 +58,13 @@ public class EnvironmentController implements IEnvironmentController {
     private void heatRoom() {
         this.hvac.heat(true);
         this.hvac.fan(true);
-        this.fanTimeout = 5;
+        this.fanTimeout = -5;
     }
 
     private void coolRoom() {
         this.hvac.cool(true);
         this.hvac.fan(true);
-        this.fanTimeout = 3;
+        this.fanTimeout = -3;
     }
 
     private void turnEverythingOff() {
