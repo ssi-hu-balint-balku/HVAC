@@ -25,7 +25,7 @@ public class HvacClient {
             sb.append("out=").append(out);
 
             withValidConnection((client) -> {
-                String dataWritten = writeToSocket((Socket) client, sb.toString());
+            writeToSocket((Socket) client, sb.toString());
             });
 
         }
@@ -49,7 +49,7 @@ public class HvacClient {
         }
     }
 
-    private String writeToSocket(Socket client, String data) {
+    private void writeToSocket(Socket client, String data) {
         try {
             PrintWriter out = new PrintWriter(client.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -57,7 +57,6 @@ public class HvacClient {
             out.println(data);
             out.flush();
 
-            return in.readLine();
         }
         catch (Exception e) {
             throw new RuntimeException();

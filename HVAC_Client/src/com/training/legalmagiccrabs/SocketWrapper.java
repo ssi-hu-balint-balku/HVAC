@@ -49,6 +49,7 @@ public class SocketWrapper implements AutoCloseable {
                 }
                 out.println(input);
                 out.flush();
+                out.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
