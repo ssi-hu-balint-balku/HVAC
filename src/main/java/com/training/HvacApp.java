@@ -37,27 +37,7 @@ public class HvacApp {
     }
 
     private static IEnvironmentController getEnvironmentController() {
-        return new EnvironmentController(new HVAC() {
-            @Override
-            public void heat(boolean on) {
-
-            }
-
-            @Override
-            public void cool(boolean on) {
-
-            }
-
-            @Override
-            public void fan(boolean on) {
-
-            }
-
-            @Override
-            public int temp() {
-                return 0;
-            }
-        });
+        return new EnvironmentController(new RealHVAC());
     }
 
 }

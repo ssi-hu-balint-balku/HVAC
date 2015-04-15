@@ -10,7 +10,7 @@ package com.training;
  */
 public class RealHVAC implements HVAC {
 
-  private int ambientTemperature = 70;
+  private int ambientTemperature = 80;
   private boolean heatingOn;
   private boolean coolingOn;
   private boolean fanOn;

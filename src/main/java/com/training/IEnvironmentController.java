@@ -14,4 +14,6 @@ public interface IEnvironmentController {
   void setTemperatureBoundaryLow(int lowTemp);
   void tick();
 
+  HVAC getHvac();
+
 }

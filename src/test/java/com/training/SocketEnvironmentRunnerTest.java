@@ -81,7 +81,7 @@ public class SocketEnvironmentRunnerTest {
       public void setTemperatureBoundaryLow(int lowTemp) {
         tempLow[0] = lowTemp;
       }
-    }, null, null).lineRead("low=55");
+    }, null, null).lineRead("min=55");
 
     Assert.assertEquals(55, tempLow[0]);
   }
@@ -95,7 +95,7 @@ public class SocketEnvironmentRunnerTest {
       public void setTemperatureBoundaryHigh(int highTemp) {
         tempHigh[0] = highTemp;
       }
-    }, null, null).lineRead("high=88");
+    }, null, null).lineRead("max=88");
 
     Assert.assertEquals(88, tempHigh[0]);
   }

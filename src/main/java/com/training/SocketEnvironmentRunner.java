@@ -8,8 +8,9 @@ import java.util.regex.Pattern;
 
 public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implements SocketWrapper.ISocketCallback {
 
-    private final Pattern lowPattern  = Pattern.compile("low=(\\d*)");
-    private final Pattern highPattern = Pattern.compile("high=(\\d*)");
+    private final Pattern lowPattern  = Pattern.compile("min=(\\d*)");
+    private final Pattern highPattern = Pattern.compile("max=(\\d*)");
+    private final Pattern ambientPattern = Pattern.compile("out=(\\d*)");
 
     private final SocketWrapper socket;
 
@@ -47,6 +48,7 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implement
     public void lineRead(String line) {
         Matcher lowMatcher = this.lowPattern.matcher(line);
         Matcher highMatcher = this.highPattern.matcher(line);
+        Matcher ambientMatcher = this.ambientPattern.matcher(line);
 
         if (lowMatcher.matches()) {
             try {
@@ -60,6 +62,17 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implement
             try {
                 int highTemp = Integer.parseInt(highMatcher.group(1));
                 this.environmentController.setTemperatureBoundaryHigh(highTemp);
+            } catch (NumberFormatException ignore) {
+            }
+        }
+
+        if (ambientMatcher.matches()) {
+            try {
+                int ambientTemp = Integer.parseInt(ambientMatcher.group(1));
+                HVAC hvac = this.environmentController.getHvac();
+                if (hvac instanceof RealHVAC) {
+                    ((RealHVAC) hvac).setAmbientTemperature(ambientTemp);
+                }
             } catch (NumberFormatException ignore) {
             }
         }

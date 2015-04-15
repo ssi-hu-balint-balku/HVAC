@@ -23,7 +23,7 @@ public class SimpleEnvironmentalRunner implements IEnvironmentRunner {
 
     @Override
     public void start() {
-        this.executorService.scheduleAtFixedRate(environmentController::tick, 0, 1, TimeUnit.MINUTES);
+        this.executorService.scheduleAtFixedRate(environmentController::tick, 0, 1, TimeUnit.SECONDS);
     }
 
     @Override

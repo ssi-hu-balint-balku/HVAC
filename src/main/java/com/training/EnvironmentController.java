@@ -74,4 +74,9 @@ public class EnvironmentController implements IEnvironmentController {
         this.fanTimeout = Math.max(0, --this.fanTimeout);
     }
 
+    @Override
+    public HVAC getHvac() {
+        return this.hvac;
+    }
+
 }
