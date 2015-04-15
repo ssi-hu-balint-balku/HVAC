@@ -85,4 +85,12 @@ public class EnvironmentController implements IEnvironmentController {
         return this.hvac;
     }
 
+    public String toString() {
+        return "EnvironmentController{" +
+                "hvac=" + hvac +
+                ", fanTimeout=" + fanTimeout +
+                ", tempHigh=" + tempHigh +
+                ", tempLow=" + tempLow +
+                '}';
+    }
 }
