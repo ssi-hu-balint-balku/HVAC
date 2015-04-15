@@ -11,22 +11,32 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SocketWrapperTest {
 
     @Test
-    public void ItCanStartASocketAtAPort() throws Exception {
+    public void itCanStartASocketAtAPort() throws Exception {
         try (SocketWrapper socketWrapper = new SocketWrapper(5000)) {
             startSocket(socketWrapper);
             withValidConnection((client) -> {
-                String dataWritten = writeToSocket((Socket) client, "Test\n");
+                String dataWritten = writeToSocket(client, "Test\n");
                 assertEquals("Test", dataWritten);
             });
         }
     }
 
+    @Test
+    public void itCanStopASocket() throws Exception {
+        try (SocketWrapper socketWrapper = new SocketWrapper(5000)) {
+            startSocket(socketWrapper);
+            withValidConnection((client) -> socketWrapper.close());
+            assertTrue(isExceptionThrown());
+        }
+    }
+
     private interface SocketExecutor {
-        void execute(Object client);
+        void execute(Socket client);
     }
 
     private void withValidConnection(SocketExecutor executor) throws InterruptedException, IOException {
@@ -60,9 +70,19 @@ public class SocketWrapperTest {
             out.flush();
 
             return in.readLine();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        catch (Exception e) {
-            throw new RuntimeException();
+    }
+
+    private boolean isExceptionThrown() {
+        boolean exceptionThrown = false;
+        try {
+            withValidConnection((c) -> {
+            });
+        } catch (Exception e) {
+            exceptionThrown = true;
         }
+        return exceptionThrown;
     }
 }
