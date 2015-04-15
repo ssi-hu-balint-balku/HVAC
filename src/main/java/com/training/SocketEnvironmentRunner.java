@@ -50,7 +50,7 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implement
         Matcher highMatcher = this.highPattern.matcher(line);
         Matcher ambientMatcher = this.ambientPattern.matcher(line);
 
-        if (lowMatcher.matches()) {
+        if (lowMatcher.find()) {
             try {
                 int lowTemp = Integer.parseInt(lowMatcher.group(1));
                 this.environmentController.setTemperatureBoundaryLow(lowTemp);
@@ -58,7 +58,7 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implement
             }
         }
 
-        if (highMatcher.matches()) {
+        if (highMatcher.find()) {
             try {
                 int highTemp = Integer.parseInt(highMatcher.group(1));
                 this.environmentController.setTemperatureBoundaryHigh(highTemp);
@@ -66,7 +66,7 @@ public class SocketEnvironmentRunner extends SimpleEnvironmentalRunner implement
             }
         }
 
-        if (ambientMatcher.matches()) {
+        if (ambientMatcher.find()) {
             try {
                 int ambientTemp = Integer.parseInt(ambientMatcher.group(1));
                 HVAC hvac = this.environmentController.getHvac();
