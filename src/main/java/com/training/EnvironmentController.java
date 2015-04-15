@@ -43,7 +43,10 @@ public class EnvironmentController implements IEnvironmentController {
         int temp = this.hvac.temp();
         System.out.println("current temperature: " + temp);
         System.out.println("current min/max: " + tempLow + "/"+tempHigh);
-        System.out.println("fan timeout: " + fanTimeout);
+        System.out.println("fan timeout: " + Math.abs(fanTimeout));
+        int medianTemp = (this.tempHigh + this.tempLow)/2 ;
+
+
 
         if ((temp < this.tempLow) && (this.fanTimeout <= 0)) {
             heatRoom();
@@ -53,8 +56,10 @@ public class EnvironmentController implements IEnvironmentController {
             if (this.fanTimeout < 0) {
                 this.fanTimeout = -this.fanTimeout;
             }
-            turnEverythingOff();
-            decrementFanTimeout();
+            if (temp <= medianTemp -1 && temp <= medianTemp +1   ) {
+                turnEverythingOff();
+                decrementFanTimeout();
+            }
         }
     }
 

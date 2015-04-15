@@ -37,10 +37,10 @@ public class RealHVAC implements HVAC {
     // temp will be called on every tick, alter the actual temperature here
     // when heating and fan is on it will increase the temperature by 2 degrees on every tick
     if (this.fanOn && this.heatingOn) {
-      this.temperature += 2;
+      this.temperature += .5;
     } else if (this.fanOn && this.coolingOn) {
       // when cooling and fan is on it will decrease the temperature by 2 degrees on every tick
-      this.temperature -= 2;
+      this.temperature -= .5;
     } else {
       // when there is no heating or cooling is in progress temperature will be increased or decreased by .25 degrees
       // based on the ambient temperature
