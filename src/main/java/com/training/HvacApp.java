@@ -4,7 +4,7 @@ public class HvacApp {
 
     public static void main(String[] args) {
 
-        IEnvironmentController environmentController = EnvironmentControllerFactory.getController(new NonWorkingHVAC());
+        IEnvironmentController environmentController = EnvironmentControllerFactory.getController(new RealHVAC());
         IEnvironmentRunner socketEnvironmentRunner = EnvironmentRunnerFactory.getRunner(environmentController);
 
         try {

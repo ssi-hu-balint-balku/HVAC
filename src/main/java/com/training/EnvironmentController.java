@@ -59,18 +59,23 @@ public class EnvironmentController implements IEnvironmentController {
     }
 
     private void heatRoom() {
+        System.out.println("+++ Heating is ON! +++");
         this.hvac.heat(true);
+        this.hvac.cool(false);
         this.hvac.fan(true);
         this.fanTimeout = -5;
     }
 
     private void coolRoom() {
+        System.out.println("--- Cooling is ON! ---");
         this.hvac.cool(true);
+        this.hvac.heat(false);
         this.hvac.fan(true);
         this.fanTimeout = -3;
     }
 
     private void turnEverythingOff() {
+        System.out.println("### Everything is turned off! ###");
         this.hvac.heat(false);
         this.hvac.cool(false);
         this.hvac.fan(false);
