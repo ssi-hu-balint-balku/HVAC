@@ -18,6 +18,7 @@ public class SocketWrapper implements AutoCloseable {
     private Socket          socket;
 
     public SocketWrapper(int port) {
+
         this.port = port;
     }
 
@@ -49,18 +50,20 @@ public class SocketWrapper implements AutoCloseable {
                 }
                 out.println(input);
                 out.flush();
-                out.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     public void close() {
         try {
             System.out.println("closing");
-            socket.close();
-            serverSocket.close();
+            if (socket != null)
+                socket.close();
+            if (serverSocket != null)
+                serverSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

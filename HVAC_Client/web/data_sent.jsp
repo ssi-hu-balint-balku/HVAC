@@ -16,14 +16,12 @@
 Minimum temperature: <%= request.getParameter("rangeInputMin") %> <br/>
 Maximum temperature: <%= request.getParameter("rangeInputMax") %> <br/>
 Outside temperature: <%= request.getParameter("rangeInputOut") %> <br/>
-Socket Port: <%= request.getParameter("socketPort") %> <br/>
 
 <% HvacClient client = new HvacClient();
   client.writeToSocketAtAPort(
           request.getParameter("rangeInputMin"),
           request.getParameter("rangeInputMax"),
-          request.getParameter("rangeInputOut"),
-          request.getParameter("socketPort"))
+          request.getParameter("rangeInputOut"))
   ;%>
 
 </body>

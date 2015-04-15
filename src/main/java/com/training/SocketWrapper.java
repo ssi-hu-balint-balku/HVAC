@@ -15,8 +15,7 @@ public class SocketWrapper implements java.lang.AutoCloseable {
 
     private int             port;
     private ISocketCallback callback;
-    private ServerSocket    serverSocket;
-    private Socket          socket;
+
 
     public SocketWrapper(int port) {
         this.port = port;
@@ -32,24 +31,20 @@ public class SocketWrapper implements java.lang.AutoCloseable {
     }
 
     public void start() {
-        try {
-            serverSocket = new ServerSocket(this.port);
-            socket = serverSocket.accept();
-
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+        try (ServerSocket serverSocket = new ServerSocket(this.port)){
             while (true) {
-                String input = in.readLine();
-                if (this.callback != null) {
-                    try {
-                        this.callback.lineRead(input);
-                    } catch (Throwable ignore) {
-                        // do not fail on exceptions in the callback
+                try(Socket socket = serverSocket.accept();
+                    PrintWriter out = new PrintWriter(socket.getOutputStream());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
+                    String input = in.readLine();
+                    if (this.callback != null) {
+                        try {
+                            this.callback.lineRead(input);
+                        } catch (Throwable ignore) {
+                            // do not fail on exceptions in the callback
+                        }
                     }
                 }
-                out.println(input);
-                out.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,13 +52,7 @@ public class SocketWrapper implements java.lang.AutoCloseable {
     }
 
     public void close() {
-        try {
-            System.out.println("closing");
-            socket.close();
-            serverSocket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //DO nothing.
     }
 
 }

@@ -16,10 +16,6 @@
 <form action="data_sent.jsp">
   <table>
     <tr>
-      <td>Socket port:</td>
-      <td><input type="input" type="number" id="socketPort" size="10" name="socketPort" min="0" max="65515" value="65515"></td>
-    </tr>
-    <tr>
       <td>Minimum temperature:</td>
       <td>
         <input type="range" id="rangeInputMin" size="10" name="rangeInputMin" min="55" max="95" value="65" oninput="amountMin.value=rangeInputMin.value"/>
