@@ -21,6 +21,11 @@ public class EnvironmentControllerFactoryTest {
         System.setProperties(sysPropBackup);
     }
 
+    @Test
+    public void should_improve_test_coverage() {
+        new EnvironmentControllerFactory();
+    }
+
     @Test(expected = NumberFormatException.class)
     public void should_throw_if_high_system_property_not_set() {
         Properties properties = new Properties();
