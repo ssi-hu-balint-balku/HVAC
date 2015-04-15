@@ -39,6 +39,10 @@ public class SocketWrapperTest {
         void execute(Socket client);
     }
 
+    private void startSocket(SocketWrapper socket) {
+        new Thread(socket::start).start();
+    }
+
     private void withValidConnection(SocketExecutor executor) throws InterruptedException, IOException {
         boolean connected = false;
         int retries = 0;
@@ -55,10 +59,6 @@ public class SocketWrapperTest {
         if (retries >= 5) {
             throw new RuntimeException();
         }
-    }
-
-    private void startSocket(SocketWrapper socket) {
-        new Thread(socket::start).start();
     }
 
     private String writeToSocket(Socket client, String data) {
