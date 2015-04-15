@@ -1,5 +1,6 @@
 package com.training.fakes;
 
+import com.training.HVAC;
 import com.training.IEnvironmentController;
 
 public class DummyEnvironmentController implements IEnvironmentController {
@@ -17,4 +18,10 @@ public class DummyEnvironmentController implements IEnvironmentController {
     public void tick() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
+
+    @Override
+    public HVAC getHvac() {
+        throw new UnsupportedOperationException("Not implemented yet.");
+    }
+
 }
